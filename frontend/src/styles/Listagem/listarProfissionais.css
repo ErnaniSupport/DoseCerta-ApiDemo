@@ -1,5 +1,5 @@
 .pageListaProfissionais {
-  max-width: 900px;
+  max-width: 1200px;
   margin-left: 10%;
   display: flex;
   flex-direction: column;
@@ -23,19 +23,25 @@
   font-size: 22px;
 }
 
-/* Labels + inputs */
-.form-card label {
-  display: flex;
-  flex-direction: column;
-  font-weight: bold;
-  color: #333;
+.form-actions .primary {
+  flex: 1;
+  background: #0066cc;
+  color: white;
+  font-size: 15px;
+  border-radius: 8px;
+  border: none;
+  
 }
 
-.form-card input {
-  margin-top: 6px;
-  padding: 5px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
+.form-actions .secondary {
+  flex: 1;
+  background: #fc0000;
+  color: white;
   font-size: 15px;
+  border-radius: 8px;
+  border: none;
+  
 }
+
+
 

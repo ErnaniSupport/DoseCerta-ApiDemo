@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import api from "../../services/api";
-import "./../../styles/Listagem/listarVacinas.css"; // 🔵 você pode usar o mesmo CSS da outra tabela
+import "./../../styles/Listagem/listarVacinas.css";
 
 export default function ListaVacinas() {
   const [vacinas, setVacinas] = useState([]);
@@ -14,9 +14,33 @@ export default function ListaVacinas() {
     protecao: "",
     quantidade: 0,
     data_cadastro: "",
-    nome_agente: "",
-    cpf_agente: ""
+    nome_profissional: "",
+    cpf_profissional: ""
   });
+
+  // ---------------------------
+  // 🟦 Funções para tratar datas
+  // ---------------------------
+
+  // Converte YYYY-MM-DD → DD/MM/YYYY (para exibição)
+  function formatarDataBR(dataISO) {
+    if (!dataISO) return "";
+    if (dataISO.includes("/")) return dataISO; // já BR
+    const [ano, mes, dia] = dataISO.split("-");
+    return `${dia}/${mes}/${ano}`;
+  }
+
+  // Converte DD/MM/YYYY → YYYY-MM-DD (para salvar ou usar no input)
+  function formatarDataISO(dataBR) {
+    if (!dataBR) return "";
+    if (dataBR.includes("-")) return dataBR; // já ISO
+    const [dia, mes, ano] = dataBR.split("/");
+    return `${ano}-${mes}-${dia}`;
+  }
+
+  // ---------------------------
+  // 🟩 Carregar dados
+  // ---------------------------
 
   useEffect(() => {
     carregar();
@@ -27,6 +51,10 @@ export default function ListaVacinas() {
     setVacinas(res.data);
   }
 
+  // ---------------------------
+  // 🟥 Excluir
+  // ---------------------------
+
   async function excluir(id) {
     if (window.confirm("Deseja excluir esta vacina?")) {
       await api.delete(`/vacinas/${id}`);
@@ -34,38 +62,61 @@ export default function ListaVacinas() {
     }
   }
 
+  // ---------------------------
+  // 🟨 Iniciar edição
+  // ---------------------------
+
   function iniciarEdicao(v) {
     setEditando(v.id);
-    setForm(v);
+
+    setForm({
+      ...v,
+      validade: v.validade.includes("/")
+        ? formatarDataISO(v.validade) // se vier BR, converte pra ISO
+        : v.validade // se vier ISO, mantém
+    });
   }
+
+  // ---------------------------
+  // 🟩 Salvar edição
+  // ---------------------------
 
   async function salvarEdicao(e) {
     e.preventDefault();
 
     const payload = {
       ...form,
-      quantidade: Number(form.quantidade)
+      quantidade: Number(form.quantidade),
+      validade: form.validade.includes("/")
+        ? formatarDataISO(form.validade)
+        : form.validade
     };
 
     await api.put(`/vacinas/${editando}`, payload);
+
     setEditando(null);
     carregar();
   }
 
+  // ---------------------------
+  // 🟦 Renderização
+  // ---------------------------
+
   return (
     <div className="pageListaVacina">
-      <h2>Vacinas Cadastradas</h2>
+      <h2>Lista de Vacinas Cadastradas</h2>
 
       <table className="tabela-doses">
         <thead>
           <tr>
-            <th>Nome</th>
-            <th>Fabricante</th>
-            <th>Lote</th>
-            <th>Validade</th>
-            <th>Quantidade</th>
-            <th>Agente</th>
-            <th>Ações</th>
+            <th>NOME</th>
+            <th>FABRICANTE</th>
+            <th>LOTE</th>
+            <th>VALIDADE</th>
+            <th>QUANTIDADE</th>
+            <th>PROFISSIONAL</th>
+            <th>CPF</th>
+            <th>AÇÕES</th>
           </tr>
         </thead>
 
@@ -75,9 +126,13 @@ export default function ListaVacinas() {
               <td>{v.nome_vacina}</td>
               <td>{v.fabricante}</td>
               <td>{v.lote}</td>
-              <td>{v.validade}</td>
+
+              {/* Exibição em formato BR */}
+              <td>{formatarDataBR(v.validade)}</td>
+
               <td>{v.quantidade}</td>
-              <td>{v.nome_agente}</td>
+              <td>{v.nome_profissional}</td>
+              <td>{v.cpf_profissional}</td>
 
               <td style={{ display: "flex", gap: "10px" }}>
                 <button className="btn-edit" onClick={() => iniciarEdicao(v)}>
@@ -95,7 +150,7 @@ export default function ListaVacinas() {
 
       {editando && (
         <div className="form-card">
-          <h3>Editando Vacina</h3>
+          <h3>Editando Vacina Cadastrada</h3>
 
           <label>
             Nome
@@ -162,33 +217,32 @@ export default function ListaVacinas() {
           </label>
 
           <label>
-            Nome do Agente
+            Nome do Profissional
             <input
-              name="nome_agente"
-              value={form.nome_agente}
+              name="nome_profissional"
+              value={form.nome_profissional}
               onChange={(e) =>
-                setForm({ ...form, nome_agente: e.target.value })
+                setForm({ ...form, nome_profissional: e.target.value })
               }
             />
           </label>
 
           <label>
-            CPF do Agente
+            CPF do Profissional
             <input
-              name="cpf_agente"
-              value={form.cpf_agente}
+              name="cpf_profissional"
+              value={form.cpf_profissional}
               onChange={(e) =>
-                setForm({ ...form, cpf_agente: e.target.value })
+                setForm({ ...form, cpf_profissional: e.target.value })
               }
             />
           </label>
 
           <div className="form-actions">
-            <button className="btn-edit" onClick={salvarEdicao}>
+            <button className="primary" onClick={salvarEdicao}>
               Salvar
             </button>
-
-            <button className="btn-delete" onClick={() => setEditando(null)}>
+            <button className="secondary" onClick={() => setEditando(null)}>
               Cancelar
             </button>
           </div>

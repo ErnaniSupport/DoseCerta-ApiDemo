@@ -10,8 +10,8 @@ export default function CadastroVacina() {
     lote: "",
     validade: "",
     quantidade: 0,
-    nome_agente: "",
-    cpf_agente: "",
+    nome_profissional: "",
+    cpf_profissional: "",
   });
 
   function h(e) {
@@ -35,8 +35,8 @@ export default function CadastroVacina() {
         protecao: form.tipo,
         quantidade: Number(form.quantidade),
         data_cadastro: new Date().toISOString().split("T")[0],
-        nome_agente: form.nome_agente,
-        cpf_agente: form.cpf_agente,
+        nome_profissional: form.nome_profissional,
+        cpf_profissional: form.cpf_profissional,
       };
 
       await api.post("/vacinas", payload);
@@ -50,8 +50,8 @@ export default function CadastroVacina() {
         lote: "",
         validade: "",
         quantidade: 0,
-        nome_agente: "",
-        cpf_agente: "",
+        nome_profissional: "",
+        cpf_profissional: "",
       });
 
     } catch (err) {
@@ -90,12 +90,12 @@ export default function CadastroVacina() {
           <input type="number" name="quantidade" value={form.quantidade} onChange={h} />
         </label>
 
-        <label>NOME DO AGENTE
-          <input name="nome_agente" value={form.nome_agente} onChange={h} />
+        <label>NOME DO PROFISSONAL
+          <input name="nome_profissional" value={form.nome_profissional} onChange={h} />
         </label>
 
-        <label>CPF DO AGENTE
-          <input name="cpf_agente" value={form.cpf_agente} onChange={h} />
+        <label>CPF DO PROFISSONAL
+          <input name="cpf_profissional" value={form.cpf_profissional} onChange={h} />
         </label>
 
         <div className={styles["form-actions-botao"]}>

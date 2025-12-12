@@ -1,0 +1,81 @@
+.RegistrarDoses {
+  max-width: 600px;
+  margin: 40px;
+}
+
+.form-card {
+  background: #fff;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.form-card label {
+  display: flex;
+  flex-direction: column;
+  font-weight: 600;
+  font-size: 14px;
+  color: #333;
+}
+
+.form-card input,
+.form-card select {
+  margin-top: 6px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #d0d0d0;
+  font-size: 15px;
+  outline: none;
+  transition: 0.2s ease;
+  background-color: #fafafa;
+}
+
+.form-card input:focus,
+.form-card select:focus {
+  border-color: #0057e7;
+  background-color: #fff;
+  box-shadow: 0 0 0 2px rgba(0, 87, 231, 0.2);
+}
+
+.form-card select {
+  cursor: pointer;
+  background-repeat: no-repeat;
+  background-position: 50px;
+  background-size: 100px;
+}
+
+/* Botão */
+.form-actions-botao {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.primary {
+  background-color: #0057e7;
+  color: #fff;
+  padding: 12px 20px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: 0.2s ease;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.primary:hover {
+  background-color: #0042b0;
+}
+
+/* Responsividade */
+@media (max-width: 480px) {
+  .form-card {
+    padding: 18px;
+  }
+
+  .primary {
+    width: 100%;
+  }
+}

@@ -92,15 +92,13 @@ export default function Dashboard() {
     { to: '/agendar-vacina', label: 'Agendar Vacina', icon: 'agenda' },
     { to: '/lista-agendamentos', label: 'Listar Agendamentos', icon: 'agenda' },
     
-
+    { to: '/registrar-doses', label: 'Registrar Doses Aplicadas', icon: 'dose' },
     { to: '/lista-doses', label: 'Listar Doses', icon: 'dose' },
 
     { to: '/lista-historico', label: 'Listar Histórico', icon: 'historico' },
 
-    // NOVAS FUNÇÕES
-    { to: '/registrar-doses', label: 'Registrar Doses Aplicadas', icon: 'dose' },
+    // ALERTAS    
     { to: '/alertas-vencimento', label: 'Alerta de Vacinas', icon: 'alerta' },
-
 
   ];
 

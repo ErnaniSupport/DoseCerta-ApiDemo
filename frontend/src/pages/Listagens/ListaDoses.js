@@ -1,12 +1,31 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import "./../../styles/lista-doses.css"; // <<< CSS da tabela
+import "./../../styles/Listagem/lista-doses.css";
 
 export default function ListaDoses() {
   const [doses, setDoses] = useState([]);
+  //const [vacinas, setVacinas] = useState([]);
 
-  const carregar = () => {
-    axios.get("http://localhost:3001/doses").then(res => setDoses(res.data));
+  const carregar = async () => {
+    try {
+      const resDoses = await axios.get("http://localhost:3001/doses");
+      const resVacinas = await axios.get("http://localhost:3001/vacinas");
+
+      const vacinasMap = {};
+      resVacinas.data.forEach(v => {
+        vacinasMap[v.id] = v.nome_vacina; // cria o mapa id → nome
+      });
+
+      // "JOIN" manual
+      const dosesComVacina = resDoses.data.map(d => ({
+        ...d,
+        vacina_nome: vacinasMap[d.vacina_id] || "—"
+      }));
+
+      setDoses(dosesComVacina);
+    } catch (err) {
+      alert("Erro ao carregar dados.");
+    }
   };
 
   useEffect(() => {
@@ -20,16 +39,23 @@ export default function ListaDoses() {
     }
   };
 
+  const formatarData = (dataISO) => {
+    const data = new Date(dataISO);
+    return data.toLocaleDateString("pt-BR");
+  };
+
   return (
-    <div className="page">
+    <div className="pageListaDoses">
       <h1>Listagem de Doses Aplicadas</h1>
 
-      <table className="pagetabela-doses">
+      <table className="tabela-doses">
         <thead>
           <tr>
             <th>Paciente</th>
             <th>CPF</th>
-            <th>Vacina ID</th>
+            <th>Vacina</th>
+            <th>Quantidade</th>
+            <th>Profissional</th>
             <th>Data Aplicação</th>
             <th>Ações</th>
           </tr>
@@ -40,10 +66,16 @@ export default function ListaDoses() {
             <tr key={d.id}>
               <td>{d.nome_paciente}</td>
               <td>{d.cpf_paciente}</td>
-              <td>{d.vacina_id}</td>
-              <td>{d.data_aplicacao}</td>
-              <td>
-                <button className="btn-delete" onClick={() => remover(d.id)}>
+              <td>{d.vacina_nome}</td>
+              <td>{d.quantidade}</td>
+              <td>{d.profissional_nome}</td>
+              <td>{formatarData(d.data_aplicacao)}</td>
+
+              <td className="acoes">
+                <button
+                  className="btn-delete"
+                  onClick={() => remover(d.id)}
+                >
                   Excluir
                 </button>
               </td>

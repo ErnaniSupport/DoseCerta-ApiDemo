@@ -7,6 +7,7 @@ import {
 } from "react-icons/fa";
 
 // PRINCIPAIS
+
 import Dashboard from "../pages/Dashboard";
 import CadastroProfissionais from "../pages/CadastroProfissionais";
 import CadastroUnidade from "../pages/CadastroUnidade";
@@ -38,15 +39,15 @@ export default function AppRoutes() {
         <aside
           style={{
             width: "260px",
-            background: "#f8f9fa",
+            background: "#d8e8f8ff",
             borderRight: "1px solid #ddd",
             padding: "20px",
             display: "flex",
             flexDirection: "column",
-            gap: "12px",
+            gap: "5px",
           }}
         >
-          <h3 style={{ marginBottom: 20 }}>Menu</h3>
+          <h3 style={{ marginBottom: 20 }}>Menu de Usabilidade</h3>
 
           {/* PRINCIPAL */}
           <Link to="/" style={linkStyle}><FaHome /> Dashboard</Link>
@@ -76,7 +77,11 @@ export default function AppRoutes() {
             <FaCalendarAlt /> Agendados
           </Link>
 
-          <h3 style={{ marginTop: 20 }}>Lista de Cadastro</h3>
+          <Link to="/registrar-doses" style={linkStyle}>
+            <FaCheckCircle /> Registrar Doses
+          </Link>
+
+          <h3 style={{ marginTop: 20 }}>Listagem de Cadastramento</h3>
 
           {/* LISTAGENS */}
           <Link to="/lista-profissionais" style={linkStyle}>
@@ -104,13 +109,7 @@ export default function AppRoutes() {
           </Link>
 
           {/* NOVAS FUNÇÕES */}
-          <hr />
-
-          <Link to="/registrar-doses" style={linkStyle}>
-            <FaCheckCircle /> Registrar Doses
-          </Link>
-
-          <Link to="/alertas-vencimento" style={linkStyle}>
+            <Link to="/alertas-vencimento" style={linkStyle}>
             <FaExclamationTriangle /> Alertas de Vencimento
           </Link>
          
@@ -152,7 +151,7 @@ const linkStyle = {
   alignItems: "center",
   gap: "10px",
   textDecoration: "none",
-  color: "#333",
+  color: "#00127aff",
   fontSize: "16px",
   padding: "8px",
   borderRadius: "5px",

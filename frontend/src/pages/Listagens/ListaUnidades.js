@@ -46,7 +46,7 @@ export default function ListaUnidades() {
 
   return (
     <div className="pageUnidade">
-      <h2>Unidades de Saúde</h2>
+      <h2>Lista de Unidades de Saúde</h2>
 
       <table className="tabela-doses">
         <thead>
@@ -89,7 +89,7 @@ export default function ListaUnidades() {
 
       {editando && (
         <div className="form-card">
-          <h3>Editando Unidade</h3>
+          <h3>Editando Unidade de Saúde</h3>
 
           <label>
             Nome Fantasia
@@ -163,13 +163,8 @@ export default function ListaUnidades() {
           </label>
 
           <div className="form-actions">
-            <button className="btn-edit" onClick={salvarEdicao}>
-              Salvar
-            </button>
-
-            <button className="btn-delete" onClick={() => setEditando(null)}>
-              Cancelar
-            </button>
+            <button className="primary" onClick={salvarEdicao}>Salvar</button>
+            <button className="secondary" onClick={() => setEditando(null)}>Cancelar</button>
           </div>
         </div>
       )}

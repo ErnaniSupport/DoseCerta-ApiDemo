@@ -1,74 +1,125 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import api from "../services/api";
+import styles from "../styles/RegistrarDoses.module.css";
 
 export default function RegistrarDoses() {
   const [vacinas, setVacinas] = useState([]);
-  const [dados, setDados] = useState({
+
+  const [form, setForm] = useState({
     vacina_id: "",
     nome_paciente: "",
     cpf_paciente: "",
     data_aplicacao: "",
-    lote: ""
-    
+    lote: "",
+    quantidade: 1,
+    profissional_nome: ""
   });
 
+  function h(e) {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  }
 
+  // Buscar vacinas
   useEffect(() => {
-    axios.get("http://localhost:3001/vacinas").then(res => {
-      setVacinas(res.data);
-    });
+    async function carregar() {
+      try {
+        const res = await api.get("/vacinas");
+        setVacinas(res.data);
+      } catch {
+        alert("Erro ao carregar vacinas.");
+      }
+    }
+    carregar();
   }, []);
 
-  const handleSubmit = async (e) => {
+  async function salvar(e) {
     e.preventDefault();
 
-    await axios.post("http://localhost:3001/doses", dados);
+    const hoje = new Date().toISOString().split("T")[0];
+    if (form.data_aplicacao > hoje) {
+      alert("A data de aplicação não pode ser no futuro.");
+      return;
+    }
 
-    alert("Dose registrada com sucesso!");
-  };
+    try {
+      await api.post("/doses", form);
+
+      alert("Registro salvo!");
+
+      setForm({
+        vacina_id: "",
+        nome_paciente: "",
+        cpf_paciente: "",
+        data_aplicacao: "",
+        lote: "",
+        quantidade: 1,
+        profissional_nome: ""
+      });
+    } catch (err) {
+      console.error(err);
+      alert("Erro ao registrar dose.");
+    }
+  }
 
   return (
-    <div className="page">
-      <h1>Registrar Dose Aplicada</h1>
+    <div className={styles.RegistrarDoses}>
+      <form className={styles["form-card"]} onSubmit={salvar}>
+        <h2>Registrar Dose Aplicada</h2>
 
-      <form className="form" onSubmit={handleSubmit}>
-        <label>Vacina</label>
-        <select
-          value={dados.vacina_id}
-          onChange={(e) => setDados({ ...dados, vacina_id: e.target.value })}
-        >
-          <option>Selecione</option>
-          {vacinas.map(v => (
-            <option key={v.id} value={v.id}>{v.nome_vacina}</option>
-          ))}
-        </select>
+        <label>VACINA
+          <select name="vacina_id" value={form.vacina_id} onChange={h}>
+            <option value="">Selecione</option>
+            {vacinas.map(v => (
+              <option key={v.id} value={v.id}>
+                {v.nome_vacina} — Lote {v.lote}
+              </option>
+            ))}
+          </select>
+        </label>
 
-        <label>Nome do Paciente</label>
-        <input
-          value={dados.nome_paciente}
-          onChange={(e) => setDados({ ...dados, nome_paciente: e.target.value })}
-        />
+        <label>NOME DO PACIENTE
+          <input name="nome_paciente" value={form.nome_paciente} onChange={h} />
+        </label>
 
-        <label>CPF do Paciente</label>
-        <input
-          value={dados.cpf_paciente}
-          onChange={(e) => setDados({ ...dados, cpf_paciente: e.target.value })}
-        />
+        <label>CPF DO PACIENTE
+          <input name="cpf_paciente" value={form.cpf_paciente} onChange={h} />
+        </label>
 
-        <label>Data da Aplicação</label>
-        <input
-          type="date"
-          value={dados.data_aplicacao}
-          onChange={(e) => setDados({ ...dados, data_aplicacao: e.target.value })}
-        />
+        <label>DATA DA APLICAÇÃO
+          <input
+            type="date"
+            name="data_aplicacao"
+            value={form.data_aplicacao}
+            onChange={h}
+            max={new Date().toISOString().split("T")[0]}
+          />
+        </label>
 
-        <label>Lote</label>
-        <input
-          value={dados.lote}
-          onChange={(e) => setDados({ ...dados, lote: e.target.value })}
-        />
+        <label>QUANTIDADE
+          <input
+            type="number"
+            name="quantidade"
+            min="1"
+            value={form.quantidade}
+            onChange={h}
+          />
+        </label>
 
-        <button className="btn">Salvar</button>
+        <label>PROFISSIONAL RESPONSÁVEL
+          <input
+            name="profissional_nome"
+            value={form.profissional_nome}
+            onChange={h}
+          />
+        </label>
+
+        <label>LOTE
+          <input name="lote" value={form.lote} onChange={h} />
+        </label>
+
+        <div className={styles["form-actions-botao"]}>
+          <button className={styles.primary}>Salvar</button>
+        </div>
       </form>
     </div>
   );

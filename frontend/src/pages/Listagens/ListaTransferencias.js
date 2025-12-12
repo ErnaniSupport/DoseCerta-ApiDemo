@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import api from "../../services/api";
 import "../../styles/Listagem/ListarTransferencia.css"; // usa o mesmo estilo das outras listas
@@ -14,8 +13,8 @@ export default function ListaTransferencias() {
     estabelecimento_destino: "",
     quantidade_transferida: 0,
     data_transferencia: "",
-    nome_agente: "",
-    cpf_agente: ""
+    nome_profissional: "",
+    cpf_profissional: ""
   });
 
   useEffect(() => {
@@ -63,7 +62,7 @@ export default function ListaTransferencias() {
     <div className="pageListarTransferencia">
       <h2>Transferências Registradas</h2>
 
-      <table className="table">
+      <table className="tabela-doses">
         <thead>
           <tr>
             <th>Vacina</th>
@@ -71,7 +70,8 @@ export default function ListaTransferencias() {
             <th>Destino</th>
             <th>Quantidade</th>
             <th>Data</th>
-            <th>Agente</th>
+            <th>Profissional</th>
+            <th>CPF</th>
             <th>Ações</th>
           </tr>
         </thead>
@@ -84,7 +84,8 @@ export default function ListaTransferencias() {
               <td>{nomeUnidade(t.estabelecimento_destino)}</td>
               <td>{t.quantidade_transferida}</td>
               <td>{t.data_transferencia}</td>
-              <td>{t.nome_agente}</td>
+              <td>{t.nome_profissional}</td>
+              <td>{t.cpf_profissional}</td>
               <td style={{ display: "flex", gap: "10px" }}>
                 <button className="btn-edit" onClick={() => iniciarEdicao(t)}>Editar</button>
                 <button className="btn-delete" onClick={() => excluir(t.id)}>Excluir</button>
@@ -145,15 +146,15 @@ export default function ListaTransferencias() {
             />
           </label>
 
-          <label>Nome agente
-            <input value={form.nome_agente}
-              onChange={e => setForm({ ...form, nome_agente: e.target.value })}
+          <label>Nome Profissional
+            <input value={form.nome_profissional}
+              onChange={e => setForm({ ...form, nome_profissional: e.target.value })}
             />
           </label>
 
-          <label>CPF agente
-            <input value={form.cpf_agente}
-              onChange={e => setForm({ ...form, cpf_agente: e.target.value })}
+          <label>CPF 
+            <input value={form.cpf_profissional}
+              onChange={e => setForm({ ...form, cpf_profissional: e.target.value })}
             />
           </label>
 

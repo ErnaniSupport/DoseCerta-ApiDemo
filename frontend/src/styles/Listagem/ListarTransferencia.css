@@ -1,39 +1,11 @@
 /* ===== PAGE WRAPPER ===== */
 .pageListarTransferencia {
-  max-width: 900px;
-  margin-left: 10%;
+  max-width: 1400px;
   display: flex;
   flex-direction: column;
   font-family: Arial, sans-serif;
 }
 
-
-/* ===== TABELA PRINCIPAL===== */
-.table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 15px;
-  background: #ffffff;
-  border-radius: 10px;
-  overflow: hidden;
-}
-
-.table thead {
-  background: #0a6bdf;
-  color: white;
-}
-
-.table th,
-.table td {
-  padding: 12px 14px;
-  text-align: left;
-  border-bottom: 1px solid #ddd;
-  font-size: 14px;
-}
-
-.table tbody tr:hover {
-  background: #eef7ff;
-}
 
 /* ===== FORMULÁRIO DE EDIÇÃO ===== */
 .form-card {
@@ -64,20 +36,11 @@
   font-size: 14px;
 }
 
-.form-card input:focus,
-.form-card select:focus {
-  outline: none;
-  border-color: #0066cc;
-  background: #fff;
-}
-
-
-
 /* ===== AÇÕES DO FORMULÁRIO ===== */
 .form-actions {
   display: flex;
   gap: 10px;
-  margin-top: 15px;
+  margin-top: 30px;
 }
 
 .form-actions .primary {
@@ -99,5 +62,3 @@
   border: none;
   cursor: pointer;
 }
-
-

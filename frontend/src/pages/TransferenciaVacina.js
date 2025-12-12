@@ -9,12 +9,27 @@ export default function TransferenciaVacina() {
     estabelecimento_destino: '',
     quantidade_transferida: 0,
     data_transferencia: '',
-    nome_agente: '',
-    cpf_agente: ''
+    nome_profissional: '',
+    cpf_profissional: ''
   });
 
   const [vacinas, setVacinas] = useState([]);
   const [postos, setPostos] = useState([]);
+
+
+  function formatarDataBR(dataISO) {
+    if (!dataISO) return "";
+    if (dataISO.includes("/")) return dataISO;
+    const [ano, mes, dia] = dataISO.split("-");
+    return `${dia}/${mes}/${ano}`;
+  }
+
+  function formatarDataISO(dataBR) {
+    if (!dataBR) return "";
+    if (dataBR.includes("-")) return dataBR;
+    const [dia, mes, ano] = dataBR.split("/");
+    return `${ano}-${mes}-${dia}`;
+  }
 
   useEffect(() => {
     api.get('/vacinas')
@@ -26,9 +41,12 @@ export default function TransferenciaVacina() {
       .catch(() => { });
   }, []);
 
+
   function handle(e) {
     setForm({ ...form, [e.target.name]: e.target.value });
   }
+
+  
 
   async function salvar(e) {
     e.preventDefault();
@@ -41,8 +59,14 @@ export default function TransferenciaVacina() {
       return alert('Quantidade inválida');
     }
 
+    const payload = {
+      ...form,
+      quantidade_transferida: Number(form.quantidade_transferida),
+      data_transferencia: formatarDataISO(form.data_transferencia)
+    };
+
     try {
-      await api.post('/transferencias', form);
+      await api.post('/transferencias', payload);
       alert('Transferência registrada com sucesso!');
 
       setForm({
@@ -51,8 +75,8 @@ export default function TransferenciaVacina() {
         estabelecimento_destino: '',
         quantidade_transferida: 0,
         data_transferencia: '',
-        nome_agente: '',
-        cpf_agente: ''
+        nome_profissional: '',
+        cpf_profissional: ''
       });
 
     } catch (err) {
@@ -61,6 +85,7 @@ export default function TransferenciaVacina() {
     }
   }
 
+  
   return (
     <div className={styles.TransferenciaVacina}>
 
@@ -114,17 +139,25 @@ export default function TransferenciaVacina() {
           />
         </label>
 
-        <label>Nome do agente
-          <input name="nome_agente" value={form.nome_agente} onChange={handle} />
+        <label>Nome do profissional
+          <input
+            name="nome_profissional"
+            value={form.nome_profissional}
+            onChange={handle}
+          />
         </label>
 
-        <label>CPF do agente
-          <input name="cpf_agente" value={form.cpf_agente} onChange={handle} />
+        <label>CPF do profissional
+          <input
+            name="cpf_profissional"
+            value={form.cpf_profissional}
+            onChange={handle}
+          />
         </label>
 
         <div className={styles["form-actions"]}>
           <button type="submit" className={styles.primary}>
-            Registrar transferência
+            REGISTRAR TRANSFERÊNCIA
           </button>
         </div>
 

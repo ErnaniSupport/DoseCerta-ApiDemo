@@ -44,7 +44,7 @@ export default function ListaProfissionais() {
 
   return (
     <div className="pageListaProfissionais">
-      <h2>Profissionais Cadastrados</h2>
+      <h2>Profissionais de Saúde Cadastrados</h2>
 
       {/* Tabela com mesmo estilo dos agendamentos */}
       <table className="tabela-doses">
@@ -86,7 +86,7 @@ export default function ListaProfissionais() {
       {/* Formulário de edição estilizado */}
       {editando && (
         <div className="form-card">
-          <h3>Editando Agente</h3>
+          <h3>Editando Profissional de Saúde</h3>
 
           <label>NOME
             <input
@@ -137,13 +137,8 @@ export default function ListaProfissionais() {
           </label>
 
           <div className="form-actions">
-            <button className="btn-edit" onClick={salvarEdicao}>
-              Salvar
-            </button>
-
-            <button className="btn-delete" onClick={() => setEditando(null)}>
-              Cancelar
-            </button>
+            <button className="primary" onClick={salvarEdicao}>Salvar</button>
+            <button className="secondary" onClick={() => setEditando(null)}>Cancelar</button>
           </div>
         </div>
       )}

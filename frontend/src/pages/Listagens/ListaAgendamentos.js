@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-
-// importa seu CSS
-import "./../../styles/Listagem/tabelaAgendamento.css"; // <<< CSS da tabela
+import "./../../styles/Listagem/tabelaAgendamento.css"; 
 
 export default function ListaAgendamentos() {
   const [agendamentos, setAgendamentos] = useState([]);
